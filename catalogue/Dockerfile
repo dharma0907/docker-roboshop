@@ -14,7 +14,7 @@ ENV MONGO="true" \
 RUN addgroup -S roboshop && adduser -S -G roboshop roboshop && \
     chown -R roboshop:roboshop /app
 COPY --from=builder /app /app
-USER roboshop
+    USER roboshop
 CMD ["node", "server.js"]
 
 # FROM node:20
