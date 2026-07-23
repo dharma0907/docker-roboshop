@@ -2,24 +2,38 @@ name: roboshop
 services:
   mongodb:
     build: ./mongodb
-    image: joindevops/mongodb:4.0.0 # docker build -t joindevops/mongodb:4.0.0
+    image: dharma006/mongodb:4.0.0 # docker build -t joindevops/mongodb:4.0.0
     container_name: mongodb # docker run -d --network roboshop joindevops/mongodb:4.0.0
     #volumes:
     #- mongodb:/data/db # mongodb stores data in /data/db directory
   catalogue:
     build: ./catalogue
-    image: joindevops/catalogue:4.0.0
+    image: dharma006/catalogue:4.0.0
     container_name: catalogue
     depends_on:
     - mongodb
   frontend:
     build: ./frontend
-    image: joindevops/frontend:4.0.0
+    image: dharma006/frontend:4.0.0
     container_name: frontend
     ports:
     - "80:80"
     depends_on:
     - catalogue
+  user:
+    build: ./user
+    image: dharma006/user:4.0.0
+    container_name: user
+    environment:
+       MONGO: true 
+       REDIS_URL: 'redis://redis:6379'
+       MONGO_URL : 'mongodb://mongodb:27017/user'
+    depends_on:
+    - redis
+    - mongodb
+  redis:
+    image: redis:7
+    container_name: redis # docker build -d --nmae redis --name network roboshop redis:7
 networks:
   default: # this means all the services in this file use this network
     name: roboshop
