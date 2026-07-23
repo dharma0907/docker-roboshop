@@ -21,6 +21,7 @@ services:
     depends_on:
     - catalogue
     - user
+    - cart
   user:
     build: ./user
     image: dharma006/user:4.0.0
